@@ -28,7 +28,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   void _onButtonPressed(String value) {
     setState(() {
-      if ("+-*/".contains(value)) {
+      if (value == "C") {
+        // Reset all values
+        _input = "";
+        _output = "";
+        num1 = 0;
+        num2 = 0;
+        operator = "";
+      } else if ("+-*/".contains(value)) {
         num1 = double.tryParse(_input) ?? 0;
         operator = value;
         _input = "";
@@ -95,4 +102,3 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 }
-
