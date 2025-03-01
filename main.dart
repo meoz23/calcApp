@@ -21,7 +21,9 @@ class CalculatorScreen extends StatefulWidget {
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
   String _input = "";
+  String _output = "";
   double num1 = 0;
+  double num2 = 0;
   String operator = "";
 
   void _onButtonPressed(String value) {
@@ -29,6 +31,23 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       if ("+-*/".contains(value)) {
         num1 = double.tryParse(_input) ?? 0;
         operator = value;
+        _input = "";
+      } else if (value == "=") {
+        num2 = double.tryParse(_input) ?? 0;
+        switch (operator) {
+          case "+":
+            _output = (num1 + num2).toString();
+            break;
+          case "-":
+            _output = (num1 - num2).toString();
+            break;
+          case "*":
+            _output = (num1 * num2).toString();
+            break;
+          case "/":
+            _output = (num1 / num2).toString();
+            break;
+        }
         _input = "";
       } else {
         _input += value;
@@ -56,7 +75,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               alignment: Alignment.bottomRight,
               padding: EdgeInsets.all(24),
               child: Text(
-                _input.isEmpty ? "0" : _input,
+                _output.isEmpty ? _input : _output,
                 style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
               ),
             ),
@@ -76,3 +95,4 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 }
+
