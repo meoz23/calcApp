@@ -20,8 +20,8 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  String _input = "";
   String _output = "";
+  String _input = "";
   double num1 = 0;
   double num2 = 0;
   String operator = "";
@@ -29,32 +29,35 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   void _onButtonPressed(String value) {
     setState(() {
       if (value == "C") {
-        // Reset all values
         _input = "";
         _output = "";
         num1 = 0;
         num2 = 0;
         operator = "";
+      } else if (value == "=") {
+        num2 = double.tryParse(_input) ?? 0;
+        if (operator == "/" && num2 == 0) {
+          _output = "Error";
+        } else {
+          switch (operator) {
+            case "+":
+              _output = (num1 + num2).toString();
+              break;
+            case "-":
+              _output = (num1 - num2).toString();
+              break;
+            case "*":
+              _output = (num1 * num2).toString();
+              break;
+            case "/":
+              _output = (num1 / num2).toString();
+              break;
+          }
+        }
+        _input = "";
       } else if ("+-*/".contains(value)) {
         num1 = double.tryParse(_input) ?? 0;
         operator = value;
-        _input = "";
-      } else if (value == "=") {
-        num2 = double.tryParse(_input) ?? 0;
-        switch (operator) {
-          case "+":
-            _output = (num1 + num2).toString();
-            break;
-          case "-":
-            _output = (num1 - num2).toString();
-            break;
-          case "*":
-            _output = (num1 * num2).toString();
-            break;
-          case "/":
-            _output = (num1 / num2).toString();
-            break;
-        }
         _input = "";
       } else {
         _input += value;
@@ -94,7 +97,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ["1", "2", "3", "-"],
               ["C", "0", "=", "+"],
             ].map((row) {
-              return Row(children: row.map(_buildButton).toList());
+              return Row(
+                children: row.map((value) => _buildButton(value)).toList(),
+              );
             }).toList(),
           ),
         ],
