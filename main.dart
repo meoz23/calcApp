@@ -14,7 +14,20 @@ class CalculatorApp extends StatelessWidget {
   }
 }
 
-class CalculatorScreen extends StatelessWidget {
+class CalculatorScreen extends StatefulWidget {
+  @override
+  _CalculatorScreenState createState() => _CalculatorScreenState();
+}
+
+class _CalculatorScreenState extends State<CalculatorScreen> {
+  String _input = "";
+
+  void _onButtonPressed(String value) {
+    setState(() {
+      _input += value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +39,7 @@ class CalculatorScreen extends StatelessWidget {
               alignment: Alignment.bottomRight,
               padding: EdgeInsets.all(24),
               child: Text(
-                "0", // Placeholder for display
+                _input.isEmpty ? "0" : _input,
                 style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
               ),
             ),
@@ -42,7 +55,7 @@ class CalculatorScreen extends StatelessWidget {
                 children: row.map((value) {
                   return Expanded(
                     child: ElevatedButton(
-                      onPressed: () {}, // No functionality yet
+                      onPressed: () => _onButtonPressed(value),
                       child: Text(value, style: TextStyle(fontSize: 24)),
                     ),
                   );
