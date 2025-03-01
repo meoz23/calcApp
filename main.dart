@@ -21,11 +21,28 @@ class CalculatorScreen extends StatefulWidget {
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
   String _input = "";
+  double num1 = 0;
+  String operator = "";
 
   void _onButtonPressed(String value) {
     setState(() {
-      _input += value;
+      if ("+-*/".contains(value)) {
+        num1 = double.tryParse(_input) ?? 0;
+        operator = value;
+        _input = "";
+      } else {
+        _input += value;
+      }
     });
+  }
+
+  Widget _buildButton(String value) {
+    return Expanded(
+      child: ElevatedButton(
+        onPressed: () => _onButtonPressed(value),
+        child: Text(value, style: TextStyle(fontSize: 24)),
+      ),
+    );
   }
 
   @override
@@ -51,16 +68,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ["1", "2", "3", "-"],
               ["C", "0", "=", "+"],
             ].map((row) {
-              return Row(
-                children: row.map((value) {
-                  return Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => _onButtonPressed(value),
-                      child: Text(value, style: TextStyle(fontSize: 24)),
-                    ),
-                  );
-                }).toList(),
-              );
+              return Row(children: row.map(_buildButton).toList());
             }).toList(),
           ),
         ],
